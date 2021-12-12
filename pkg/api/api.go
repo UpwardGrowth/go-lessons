@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/UpwardGrowth/go-lessons/pkg/db"
 	httpServer "github.com/UpwardGrowth/go-lessons/pkg/router"
@@ -25,8 +24,8 @@ func Start() {
 	// init db
 	conn, err := db.GetConnction(dbHost, dbPort, dbUser, dbPassword, dbName)
 	if err != nil {
-		fmt.Printf("db stack trace:\n%+v\v", err)
-		os.Exit(1)
+		fmt.Printf("api: db stack trace:\n%+v\v", err)
+		panic(err)
 	}
 
 	defer conn.Close()
@@ -41,6 +40,7 @@ func Start() {
 	}
 
 	if err := srv.ListenAndServe(); err != nil {
-		log.Println(err)
+		log.Println("api: ListenAndServe err\n", err)
+		panic(err)
 	}
 }
