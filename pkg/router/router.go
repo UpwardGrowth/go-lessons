@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 
 	"github.com/UpwardGrowth/go-lessons/internal/sqlstore"
@@ -35,7 +36,7 @@ func (hs *handler) getUserHandle(w http.ResponseWriter, req *http.Request) {
 	}
 
 	user, err := hs.AccountStore.QueryUserinfo(id)
-	if err == sql.ErrNoRows {
+	if errors.Is(err, sql.ErrNoRows) {
 		fmt.Println("getUserHandle QueryUserinfo err: no data")
 
 		resp := map[string]interface{}{

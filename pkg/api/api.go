@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -24,10 +23,8 @@ func Start() {
 	// init db
 	conn, err := db.GetConnction(dbHost, dbPort, dbUser, dbPassword, dbName)
 	if err != nil {
-		fmt.Printf("api: db stack trace:\n%+v\v", err)
-		panic(err)
+		log.Fatalf("api: db init err:\n%+v", err)
 	}
-
 	defer conn.Close()
 
 	// init http server
@@ -40,7 +37,6 @@ func Start() {
 	}
 
 	if err := srv.ListenAndServe(); err != nil {
-		log.Println("api: ListenAndServe err\n", err)
-		panic(err)
+		log.Fatalf("api: ListenAndServe err\n%+v", err)
 	}
 }
